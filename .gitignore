@@ -1,0 +1,6 @@
+**/*/*.o
+**/*/*.a
+philo/philo
+.vscode
+.vscode/*
+*.log
