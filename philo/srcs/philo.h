@@ -6,7 +6,7 @@
 /*   By: rsebasti <rsebasti@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:33:37 by rsebasti          #+#    #+#             */
-/*   Updated: 2025/01/29 19:54:37 by rsebasti         ###   ########.fr       */
+/*   Updated: 2025/01/31 12:32:51 by rsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,6 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-typedef struct s_table
-{
-	int				nb_philo;
-	int				time_die;
-	int				time_eat;
-	int				time_sleep;
-	int				nb_eat;
-	t_philo			*philos;
-	pthread_mutex_t	*fork;
-}	t_table;
-
 typedef struct s_philo
 {
 	int				nb;
@@ -38,11 +27,30 @@ typedef struct s_philo
 	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	eat_status;
+	struct s_table	*table;
 }	t_philo;
 
+typedef struct s_table
+{
+	int				nb_philo;
+	int				time_die;
+	int				time_eat;
+	int				time_sleep;
+	int				nb_eat;
+	int				is_end;
+	pthread_t		end_check;
+	t_philo			**philos;
+	pthread_mutex_t	*fork;
+	pthread_mutex_t	end;
+	pthread_mutex_t	print;
+}	t_table;
+
+void	*endgame(void *arg);
 void	putstr_fd(int fd, char *str);
 int		ft_atoi_secure(const char *nptr);
-long	ft_get_time_ms(void);
-void	routine(void);
+long	ft_get_time(void);
+void	*routine(void *arg);
+int		ft_printph(t_philo *philo, char *msg);
 
 #endif

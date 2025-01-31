@@ -9,7 +9,8 @@ FLAGS = -Wall -Wextra -Werror -g
 
 SOURCES = \
         philo.c \
-		utils.c
+		utils.c \
+		routine.c
 
 OBJDIR = obj
 OBJS = $(addprefix $(OBJDIR)/, $(SOURCES:.c=.o))
