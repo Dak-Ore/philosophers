@@ -6,7 +6,7 @@
 /*   By: rsebasti <rsebasti@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:06:39 by rsebasti          #+#    #+#             */
-/*   Updated: 2025/01/31 12:41:04 by rsebasti         ###   ########.fr       */
+/*   Updated: 2025/02/02 17:31:50 by rsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,15 @@ long	ft_get_time(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
+void	sleep_ms(long duration)
+{
+	long	start;
+
+	start = ft_get_time();
+	while (ft_get_time() < start + duration)
+		usleep(500);
+}
+
 int	ft_printph(t_philo *philo, char *msg)
 {
 	int		stop;
@@ -29,7 +38,7 @@ int	ft_printph(t_philo *philo, char *msg)
 	pthread_mutex_lock(&philo->table->end);
 	stop = philo->table->is_end;
 	if (stop)
-		return (1);
+		return (pthread_mutex_unlock(&philo->table->end), 1);
 	pthread_mutex_unlock(&philo->table->end);
 	pthread_mutex_lock(&philo->table->print);
 	printf("%ld %d %s\n", time, philo->nb, msg);
@@ -63,4 +72,3 @@ int	ft_atoi_secure(const char *nptr)
 	}
 	return ((int)result);
 }
-

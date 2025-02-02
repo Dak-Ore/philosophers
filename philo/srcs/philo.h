@@ -6,7 +6,7 @@
 /*   By: rsebasti <rsebasti@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:33:37 by rsebasti          #+#    #+#             */
-/*   Updated: 2025/01/31 12:32:51 by rsebasti         ###   ########.fr       */
+/*   Updated: 2025/02/02 16:47:49 by rsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,18 @@ typedef struct s_table
 	int				time_sleep;
 	int				nb_eat;
 	int				is_end;
-	pthread_t		end_check;
 	t_philo			**philos;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	end;
 	pthread_mutex_t	print;
 }	t_table;
 
-void	*endgame(void *arg);
+void	*endgame(t_table *table);
 void	putstr_fd(int fd, char *str);
 int		ft_atoi_secure(const char *nptr);
 long	ft_get_time(void);
 void	*routine(void *arg);
 int		ft_printph(t_philo *philo, char *msg);
+void	sleep_ms(long duration);
 
 #endif

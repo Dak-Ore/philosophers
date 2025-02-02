@@ -6,7 +6,7 @@
 /*   By: rsebasti <rsebasti@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 10:57:17 by rsebasti          #+#    #+#             */
-/*   Updated: 2025/01/31 12:41:25 by rsebasti         ###   ########.fr       */
+/*   Updated: 2025/02/02 17:18:21 by rsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	init_table(t_table *table)
 {
 	int	i;
 
+	pthread_mutex_init(&table->print, NULL);
+	pthread_mutex_init(&table->end, NULL);
 	table->philos = malloc(table->nb_philo * sizeof(t_philo));
 	table->fork = malloc(table->nb_philo * sizeof(pthread_mutex_t));
 	i = -1;
@@ -45,13 +47,10 @@ void	init_table(t_table *table)
 	i = -1;
 	while (++i < table->nb_philo)
 		table->philos[i] = init_philo(table, i);
-	pthread_create(&table->end_check, NULL, endgame, table);
 }
 
 int	init_var(t_table *table, int argc, char **argv)
 {
-	pthread_mutex_init(&table->print, NULL);
-	pthread_mutex_init(&table->end, NULL);
 	table->nb_philo = ft_atoi_secure(argv[1]);
 	table->time_die = ft_atoi_secure(argv[2]);
 	table->time_eat = ft_atoi_secure(argv[3]);
@@ -69,6 +68,25 @@ int	init_var(t_table *table, int argc, char **argv)
 	return (1);
 }
 
+void	free_table(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->nb_philo)
+	{
+		pthread_join(table->philos[i]->thread, NULL);
+		pthread_mutex_destroy(&table->philos[i]->eat_status);
+		pthread_mutex_destroy(&table->fork[i]);
+		free(table->philos[i]);
+		i++;
+	}
+	free(table->fork);
+	free(table->philos);
+	pthread_mutex_destroy(&table->end);
+	pthread_mutex_destroy(&table->print);
+}
+
 int	main(int argc, char **argv)
 {
 	t_table	table;
@@ -78,7 +96,7 @@ int	main(int argc, char **argv)
 			putstr_fd(2, "Usage: ./philo <number> <time_to_die <time_to_eat>"),
 			putstr_fd(2, " <time_to_sleep> [eat_x_time]\n"), 0);
 	init_var(&table, argc, argv);
-	while (1)
-		;
+	endgame(&table);
+	free_table(&table);
 	return (1);
 }
