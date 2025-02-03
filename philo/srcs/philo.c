@@ -6,7 +6,7 @@
 /*   By: rsebasti <rsebasti@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 10:57:17 by rsebasti          #+#    #+#             */
-/*   Updated: 2025/02/02 17:18:21 by rsebasti         ###   ########.fr       */
+/*   Updated: 2025/02/04 00:27:41 by rsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,6 @@ int	main(int argc, char **argv)
 	init_var(&table, argc, argv);
 	endgame(&table);
 	free_table(&table);
+	usleep(2000);
 	return (1);
 }
