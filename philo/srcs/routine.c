@@ -6,11 +6,30 @@
 /*   By: rsebasti <rsebasti@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 19:51:34 by rsebasti          #+#    #+#             */
-/*   Updated: 2025/02/02 17:22:28 by rsebasti         ###   ########.fr       */
+/*   Updated: 2025/02/04 00:40:54 by rsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	print_end(t_philo *philo, char *msg)
+{
+	long	time;
+
+	time = ft_get_time();
+	if (philo)
+	{
+		pthread_mutex_lock(&philo->table->print);
+		printf("%ld %d %s\n", time, philo->nb, msg);
+		pthread_mutex_unlock(&philo->table->print);
+	}
+	else
+	{
+		pthread_mutex_lock(&philo->table->print);
+		printf("%ld %s\n", time, msg);
+		pthread_mutex_unlock(&philo->table->print);
+	}
+}
 
 int	check_all_eat(t_table *table)
 {
@@ -35,6 +54,7 @@ int	check_all_eat(t_table *table)
 	pthread_mutex_lock(&table->end);
 	table->is_end = 1;
 	pthread_mutex_unlock(&table->end);
+	print_end(NULL, "Simulation ended because everyone eat enough\n");
 	return (0);
 }
 
@@ -50,10 +70,10 @@ void	*endgame(t_table *table)
 			pthread_mutex_lock(&table->philos[i]->eat_status);
 			if (ft_get_time() - table->philos[i]->last_eat > table->time_die)
 			{
-				ft_printph(table->philos[i], "died");
 				pthread_mutex_lock(&table->end);
 				table->is_end = 1;
 				pthread_mutex_unlock(&table->end);
+				print_end(table->philos[i], "died");
 				pthread_mutex_unlock(&table->philos[i]->eat_status);
 				return (NULL);
 			}

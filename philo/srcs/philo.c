@@ -6,7 +6,7 @@
 /*   By: rsebasti <rsebasti@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 10:57:17 by rsebasti          #+#    #+#             */
-/*   Updated: 2025/02/04 00:27:41 by rsebasti         ###   ########.fr       */
+/*   Updated: 2025/02/04 00:57:45 by rsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	free_table(t_table *table)
 	while (i < table->nb_philo)
 	{
 		pthread_join(table->philos[i]->thread, NULL);
+		pthread_mutex_lock(&table->philos[i]->eat_status);
+		pthread_mutex_unlock(&table->philos[i]->eat_status);
 		pthread_mutex_destroy(&table->philos[i]->eat_status);
 		pthread_mutex_destroy(&table->fork[i]);
 		free(table->philos[i]);
@@ -97,7 +99,8 @@ int	main(int argc, char **argv)
 			putstr_fd(2, " <time_to_sleep> [eat_x_time]\n"), 0);
 	init_var(&table, argc, argv);
 	endgame(&table);
+	sleep_ms(table.time_eat);
+	usleep(5000);
 	free_table(&table);
-	usleep(2000);
 	return (1);
 }
