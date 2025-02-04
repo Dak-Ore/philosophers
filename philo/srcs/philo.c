@@ -6,7 +6,7 @@
 /*   By: rsebasti <rsebasti@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 10:57:17 by rsebasti          #+#    #+#             */
-/*   Updated: 2025/02/04 00:59:22 by rsebasti         ###   ########.fr       */
+/*   Updated: 2025/02/04 11:27:18 by rsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void	free_table(t_table *table)
 		pthread_mutex_lock(&table->philos[i]->eat_status);
 		pthread_mutex_unlock(&table->philos[i]->eat_status);
 		pthread_mutex_destroy(&table->philos[i]->eat_status);
+		pthread_mutex_lock(&table->fork[i]);
+		pthread_mutex_unlock(&table->fork[i]);
 		pthread_mutex_destroy(&table->fork[i]);
 		free(table->philos[i]);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: rsebasti <rsebasti@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 19:51:34 by rsebasti          #+#    #+#             */
-/*   Updated: 2025/02/04 01:17:50 by rsebasti         ###   ########.fr       */
+/*   Updated: 2025/02/04 11:22:43 by rsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	print_end(t_philo *philo, char *msg, t_table *table)
 {
 	long	time;
 
-	usleep(2000);
 	time = ft_get_time();
 	pthread_mutex_lock(&table->print);
 	if (philo)
