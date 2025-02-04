@@ -6,29 +6,24 @@
 /*   By: rsebasti <rsebasti@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 19:51:34 by rsebasti          #+#    #+#             */
-/*   Updated: 2025/02/04 00:40:54 by rsebasti         ###   ########.fr       */
+/*   Updated: 2025/02/04 01:17:50 by rsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	print_end(t_philo *philo, char *msg)
+void	print_end(t_philo *philo, char *msg, t_table *table)
 {
 	long	time;
 
+	usleep(2000);
 	time = ft_get_time();
+	pthread_mutex_lock(&table->print);
 	if (philo)
-	{
-		pthread_mutex_lock(&philo->table->print);
 		printf("%ld %d %s\n", time, philo->nb, msg);
-		pthread_mutex_unlock(&philo->table->print);
-	}
 	else
-	{
-		pthread_mutex_lock(&philo->table->print);
 		printf("%ld %s\n", time, msg);
-		pthread_mutex_unlock(&philo->table->print);
-	}
+	pthread_mutex_unlock(&table->print);
 }
 
 int	check_all_eat(t_table *table)
@@ -54,7 +49,7 @@ int	check_all_eat(t_table *table)
 	pthread_mutex_lock(&table->end);
 	table->is_end = 1;
 	pthread_mutex_unlock(&table->end);
-	print_end(NULL, "Simulation ended because everyone eat enough\n");
+	print_end(NULL, "Simulation ended because everyone eat enough", table);
 	return (0);
 }
 
@@ -73,7 +68,7 @@ void	*endgame(t_table *table)
 				pthread_mutex_lock(&table->end);
 				table->is_end = 1;
 				pthread_mutex_unlock(&table->end);
-				print_end(table->philos[i], "died");
+				print_end(table->philos[i], "died", table);
 				pthread_mutex_unlock(&table->philos[i]->eat_status);
 				return (NULL);
 			}
