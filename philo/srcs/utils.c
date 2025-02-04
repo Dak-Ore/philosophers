@@ -6,7 +6,7 @@
 /*   By: rsebasti <rsebasti@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:06:39 by rsebasti          #+#    #+#             */
-/*   Updated: 2025/02/02 17:31:50 by rsebasti         ###   ########.fr       */
+/*   Updated: 2025/02/04 11:36:19 by rsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,11 @@ int	ft_atoi_secure(const char *nptr)
 			return (-1);
 	while (*nptr)
 	{
-		if (!(*nptr >= '0' || *nptr <= '9'))
+		if (!(*nptr >= '0' && *nptr <= '9'))
 			return (-1);
 		result = result * 10 + (*(nptr++) - '0');
 	}
+	if (result > 2147483647)
+		return (-1);
 	return ((int)result);
 }

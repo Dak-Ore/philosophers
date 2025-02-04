@@ -6,7 +6,7 @@
 /*   By: rsebasti <rsebasti@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 10:57:17 by rsebasti          #+#    #+#             */
-/*   Updated: 2025/02/04 11:27:18 by rsebasti         ###   ########.fr       */
+/*   Updated: 2025/02/04 11:40:52 by rsebasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	init_var(t_table *table, int argc, char **argv)
 	else
 		table->nb_eat = -2;
 	if (table->nb_philo <= 0 || table->time_die == -1
-		|| table->time_sleep == -1 || table->time_sleep == -1
+		|| table->time_sleep == -1 || table->time_eat == -1
 		|| table->nb_philo >= 250 || table->nb_eat == -1)
 		return (putstr_fd(2, "Invalid argument\n"), 0);
 	init_table(table);
@@ -99,7 +99,8 @@ int	main(int argc, char **argv)
 		return (putstr_fd(2, "Invalid number of argument\n"),
 			putstr_fd(2, "Usage: ./philo <number> <time_to_die <time_to_eat>"),
 			putstr_fd(2, " <time_to_sleep> [eat_x_time]\n"), 0);
-	init_var(&table, argc, argv);
+	if (init_var(&table, argc, argv) == 0)
+		return (0);
 	endgame(&table);
 	free_table(&table);
 	return (1);
